@@ -3,7 +3,7 @@ import unittest
 from header_analyzer import analyze_headers, normalize_url
 
 
-class HeaderAnalyzerTests(unittest.TestCase):
+class TestHeaderAnalyzer(unittest.TestCase):
     def test_analyze_headers_detects_missing_security_headers(self):
         headers = {
             "Server": "nginx",

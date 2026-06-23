@@ -105,7 +105,9 @@ def main() -> int:
     print_banner()
 
     try:
-        response = requests.get(url, timeout=10)
+        with requests.Session() as session:
+            session.max_redirects = 5
+            response = session.get(url, timeout=10, allow_redirects=True, verify=True)
     except requests.RequestException as exc:
         print(f"{Fore.RED}Request failed:{Style.RESET_ALL} {exc}")
         return 1
