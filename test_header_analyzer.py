@@ -33,6 +33,12 @@ class TestHeaderAnalyzer(unittest.TestCase):
         self.assertEqual(analysis["missing_security_headers"], [])
         self.assertEqual(analysis["risk_level"], "Low")
 
+    def test_analyze_headers_uses_defaults_when_headers_missing(self):
+        analysis = analyze_headers({})
+
+        self.assertEqual(analysis["server"], "Not disclosed")
+        self.assertEqual(analysis["content_type"], "Unknown")
+
     def test_normalize_url_adds_https_scheme(self):
         self.assertEqual(normalize_url("example.com"), "https://example.com")
         self.assertEqual(normalize_url("https://example.com"), "https://example.com")
