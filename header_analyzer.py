@@ -113,7 +113,7 @@ def main() -> int:
 
     try:
         with requests.Session() as session:
-            response = session.get(url, timeout=10, allow_redirects=False, verify=True)
+            response = session.get(url, timeout=10, allow_redirects=True, verify=True)
     except requests.RequestException as exc:
         print(f"{Fore.RED}Request failed:{Style.RESET_ALL} {exc}")
         return 1

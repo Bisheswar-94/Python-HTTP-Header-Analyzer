@@ -4,7 +4,7 @@ from header_analyzer import analyze_headers, normalize_url
 
 
 class TestHeaderAnalyzer(unittest.TestCase):
-    def test_analyze_headers_identifies_missing_headers(self):
+    def test_analyze_headers_detects_missing_csp_and_calculates_high_risk(self):
         headers = {
             "Server": "nginx",
             "Content-Type": "text/html",
