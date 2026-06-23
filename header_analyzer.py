@@ -17,6 +17,7 @@ REQUIRED_SECURITY_HEADERS = {
     "permissions-policy": "Permissions-Policy",
     "referrer-policy": "Referrer-Policy",
 }
+MAX_REDIRECTS = 5
 
 
 def normalize_url(url: str) -> str:
@@ -106,7 +107,7 @@ def main() -> int:
 
     try:
         with requests.Session() as session:
-            session.max_redirects = 5
+            session.max_redirects = MAX_REDIRECTS
             response = session.get(url, timeout=10, allow_redirects=True, verify=True)
     except requests.RequestException as exc:
         print(f"{Fore.RED}Request failed:{Style.RESET_ALL} {exc}")

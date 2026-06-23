@@ -19,7 +19,7 @@ class TestHeaderAnalyzer(unittest.TestCase):
         self.assertIn("Content-Security-Policy", analysis["missing_security_headers"])
         self.assertEqual(analysis["risk_level"], "High")
 
-    def test_analyze_headers_no_missing_is_low_risk(self):
+    def test_analyze_headers_all_security_headers_present_is_low_risk(self):
         headers = {
             "Content-Security-Policy": "default-src 'self'",
             "X-Frame-Options": "DENY",
