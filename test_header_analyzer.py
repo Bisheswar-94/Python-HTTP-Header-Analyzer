@@ -39,7 +39,7 @@ class TestHeaderAnalyzer(unittest.TestCase):
         self.assertEqual(analysis["server"], "Not disclosed")
         self.assertEqual(analysis["content_type"], "Unknown")
 
-    def test_normalize_url_adds_https_scheme(self):
+    def test_normalize_url_scheme_handling(self):
         self.assertEqual(normalize_url("example.com"), "https://example.com")
         self.assertEqual(normalize_url("https://example.com"), "https://example.com")
         self.assertEqual(normalize_url("http://example.com"), "http://example.com")
