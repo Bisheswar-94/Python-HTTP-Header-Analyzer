@@ -1,0 +1,42 @@
+import unittest
+
+from header_analyzer import analyze_headers, normalize_url
+
+
+class HeaderAnalyzerTests(unittest.TestCase):
+    def test_analyze_headers_detects_missing_security_headers(self):
+        headers = {
+            "Server": "nginx",
+            "Content-Type": "text/html",
+            "X-Frame-Options": "DENY",
+        }
+
+        analysis = analyze_headers(headers)
+
+        self.assertEqual(analysis["server"], "nginx")
+        self.assertEqual(analysis["content_type"], "text/html")
+        self.assertIn("X-Frame-Options", analysis["present_security_headers"])
+        self.assertIn("Content-Security-Policy", analysis["missing_security_headers"])
+        self.assertEqual(analysis["risk_level"], "High")
+
+    def test_analyze_headers_no_missing_is_low_risk(self):
+        headers = {
+            "Content-Security-Policy": "default-src 'self'",
+            "X-Frame-Options": "DENY",
+            "Strict-Transport-Security": "max-age=63072000",
+            "Permissions-Policy": "geolocation=()",
+            "Referrer-Policy": "strict-origin-when-cross-origin",
+        }
+
+        analysis = analyze_headers(headers)
+
+        self.assertEqual(analysis["missing_security_headers"], [])
+        self.assertEqual(analysis["risk_level"], "Low")
+
+    def test_normalize_url_adds_https_scheme(self):
+        self.assertEqual(normalize_url("example.com"), "https://example.com")
+        self.assertEqual(normalize_url("https://example.com"), "https://example.com")
+
+
+if __name__ == "__main__":
+    unittest.main()
