@@ -31,6 +31,6 @@ A professional cybersecurity tool written in Python that analyzes HTTP response 
 ## Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/Python-HTTP-Header-Analyzer.git
+git clone https://github.com/Bisheswar-94/Python-HTTP-Header-Analyzer.git
 
 cd Python-HTTP-Header-Analyzer
