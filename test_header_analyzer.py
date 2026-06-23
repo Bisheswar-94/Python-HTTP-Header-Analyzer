@@ -4,7 +4,7 @@ from header_analyzer import analyze_headers, normalize_url
 
 
 class TestHeaderAnalyzer(unittest.TestCase):
-    def test_analyze_headers_detects_missing_security_headers(self):
+    def test_analyze_headers_identifies_missing_headers(self):
         headers = {
             "Server": "nginx",
             "Content-Type": "text/html",
@@ -36,6 +36,7 @@ class TestHeaderAnalyzer(unittest.TestCase):
     def test_normalize_url_adds_https_scheme(self):
         self.assertEqual(normalize_url("example.com"), "https://example.com")
         self.assertEqual(normalize_url("https://example.com"), "https://example.com")
+        self.assertEqual(normalize_url("http://example.com"), "http://example.com")
 
 
 if __name__ == "__main__":

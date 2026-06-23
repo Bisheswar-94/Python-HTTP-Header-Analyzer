@@ -18,6 +18,11 @@ REQUIRED_SECURITY_HEADERS = {
     "referrer-policy": "Referrer-Policy",
 }
 MAX_REDIRECTS = 5
+RISK_COLORS = {
+    "Low": Fore.GREEN,
+    "Medium": Fore.YELLOW,
+    "High": Fore.RED,
+}
 
 
 def normalize_url(url: str) -> str:
@@ -93,7 +98,7 @@ def print_report(url: str, status_code: int, analysis: Mapping[str, object]) -> 
         print(f"  {Fore.GREEN}None{Style.RESET_ALL}")
 
     risk_level = analysis["risk_level"]
-    risk_color = {"Low": Fore.GREEN, "Medium": Fore.YELLOW, "High": Fore.RED}.get(risk_level, Fore.WHITE)
+    risk_color = RISK_COLORS.get(risk_level, Fore.WHITE)
     print(f"\n{Fore.MAGENTA}Risk level:{Style.RESET_ALL} {risk_color}{risk_level}{Style.RESET_ALL}")
 
 
