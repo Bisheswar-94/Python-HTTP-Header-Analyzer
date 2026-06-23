@@ -1,10 +1,13 @@
 import unittest
+from unittest.mock import MagicMock, patch
 
-from header_analyzer import analyze_headers, normalize_url
+import requests
+
+from header_analyzer import analyze_headers, main, normalize_url
 
 
 class TestHeaderAnalyzer(unittest.TestCase):
-    def test_analyze_headers_detects_missing_csp_and_calculates_high_risk(self):
+    def test_missing_csp_header_results_in_high_risk(self):
         headers = {
             "Server": "nginx",
             "Content-Type": "text/html",
@@ -43,6 +46,44 @@ class TestHeaderAnalyzer(unittest.TestCase):
         self.assertEqual(normalize_url("example.com"), "https://example.com")
         self.assertEqual(normalize_url("https://example.com"), "https://example.com")
         self.assertEqual(normalize_url("http://example.com"), "http://example.com")
+
+    @patch("header_analyzer.print_report")
+    @patch("header_analyzer.print_banner")
+    @patch("header_analyzer.analyze_headers")
+    @patch("header_analyzer.requests.Session")
+    def test_main_uses_secure_request_options(
+        self, session_cls, analyze_headers_mock, _print_banner_mock, _print_report_mock
+    ):
+        session = MagicMock()
+        session_cls.return_value.__enter__.return_value = session
+        session.get.return_value = MagicMock(headers={}, status_code=200)
+        analyze_headers_mock.return_value = {
+            "server": "Not disclosed",
+            "content_type": "Unknown",
+            "present_security_headers": [],
+            "missing_security_headers": [],
+            "risk_level": "Low",
+        }
+
+        with patch("sys.argv", ["header_analyzer.py", "example.com"]):
+            exit_code = main()
+
+        self.assertEqual(exit_code, 0)
+        session.get.assert_called_once_with(
+            "https://example.com", timeout=10, allow_redirects=True, verify=True
+        )
+
+    @patch("header_analyzer.print_banner")
+    @patch("header_analyzer.requests.Session")
+    def test_main_returns_error_on_request_exception(self, session_cls, _print_banner_mock):
+        session = MagicMock()
+        session_cls.return_value.__enter__.return_value = session
+        session.get.side_effect = requests.RequestException("network failure")
+
+        with patch("sys.argv", ["header_analyzer.py", "example.com"]):
+            exit_code = main()
+
+        self.assertEqual(exit_code, 1)
 
 
 if __name__ == "__main__":
