@@ -1,36 +1,26 @@
-# Python HTTP Header Analyzer
+# Python-HTTP-Header-Analyzer
 
-A professional cybersecurity tool written in Python that analyzes HTTP response headers and checks for missing security protections.
-
----
+Professional Python cybersecurity tool that analyzes HTTP response headers and detects missing security protections like CSP, HSTS, X-Frame-Options, and more.
 
 ## Features
 
-- Fetches HTTP response headers
-- Detects:
-  - Server Information
-  - Content-Type
-  - Security Headers
-- Identifies missing security protections
-- Clean terminal UI with color formatting
-- Fast and lightweight
+- Colorful terminal output with `colorama`
+- Professional ASCII banner
+- Server and `Content-Type` header visibility
+- Security risk analysis based on missing protections
+- Fast website scanning with `requests`
 
----
+## Security headers checked
 
-## Security Headers Checked
-
-- Strict-Transport-Security
 - Content-Security-Policy
 - X-Frame-Options
-- X-Content-Type-Options
-- Referrer-Policy
+- Strict-Transport-Security
 - Permissions-Policy
+- Referrer-Policy
 
----
-
-## Installation
+## Usage
 
 ```bash
-git clone https://github.com/Bisheswar-94/Python-HTTP-Header-Analyzer.git
-
-cd Python-HTTP-Header-Analyzer
+pip install -r requirements.txt
+python header_analyzer.py example.com
+```
